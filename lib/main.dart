@@ -1,25 +1,24 @@
 import 'package:flutter/material.dart';
-import 'package:myportofolio_mobile/menu.dart';
 
-void main() {
-  runApp(const MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class MyHomePage extends StatelessWidget {
+  MyHomePage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'MyPortfolio',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: Colors.indigo,
-          secondary: Colors.amber[700],
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text(
+          'MyPortfolio',
+          style: TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+          ),
         ),
-        useMaterial3: true,
+        backgroundColor: Theme.of(context).colorScheme.primary,
       ),
-      home: MyHomePage(),
+      body: const Center(
+        child: Text('Selamat datang di MyPortfolio Mobile!'),
+      ),
     );
   }
 }
