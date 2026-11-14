@@ -62,61 +62,44 @@ Pada **Tutorial 08**, aplikasi ini menampilkan halaman beranda statis portofolio
 
 ### Tugas 7
 
-1. Jelaskan apa yang dimaksud dengan widget tree pada Flutter dan bagaimana hubungan induk-anak (parent-child) bekerja antar-widget!
-Widget tree adalah struktur hierarki (pohon) yang merepresentasikan bagaimana widget-widget dalam aplikasi Flutter disusun. Dalam Flutter, hampir semuanya adalah widget. Hubungan parent-child bekerja dengan cara widget induk (parent) membungkus dan mengontrol tata letak serta batasan widget di dalamnya (child/children). Misalnya, Column (parent) dapat menampung beberapa widget Text (children) dan menyusunnya secara vertikal. Data dan constraints (seperti batasan ukuran) mengalir dari atas (parent) ke bawah (child), sedangkan event (seperti interaksi klik) mengalir dari bawah (child) ke atas (parent).
+1. **Apa yang dimaksud dengan widget tree pada Flutter dan bagaimana hubungan induk-anak (parent-child) bekerja antar-widget?**
+   *Widget tree* adalah struktur hierarki berbentuk pohon yang merepresentasikan seluruh elemen antarmuka pengguna (UI) dalam aplikasi Flutter, mulai dari *root widget* hingga komponen terkecil seperti teks atau ikon. Hubungan *parent-child* bekerja melalui komposisi: *parent widget* membungkus satu (`child`) atau beberapa (`children`) *child widget*, lalu meneruskan batasan ukuran (*constraints*), tema, maupun konfigurasi posisi ke bawah, sementara *child widget* menentukan ukurannya sendiri berdasarkan batasan tersebut untuk kemudian diposisikan oleh *parent*-nya.
 
-2. Sebutkan semua widget yang kamu gunakan dalam proyek ini dan jelaskan fungsinya masing-masing!
+2. **Sebutkan semua widget yang kamu gunakan dalam proyek ini dan jelaskan fungsinya masing-masing!**
+   * `MyApp` (`StatelessWidget`): *Root widget* aplikasi yang membungkus keseluruhan konfigurasi aplikasi.
+   * `MaterialApp`: Menyediakan konfigurasi dasar Material Design seperti tema (`ThemeData`), judul aplikasi, dan halaman awal (`home`).
+   * `MyHomePage` (`StatelessWidget`): Widget utama untuk halaman beranda portofolio.
+   * `Scaffold`: Kerangka tata letak standar halaman Material Design yang menyediakan area `appBar`, `body`, dan wadah tampilan `SnackBar`.
+   * `AppBar`: Bilah judul pada bagian paling atas layar.
+   * `SingleChildScrollView`: Memungkinkan konten halaman digulir (*scroll*) secara vertikal agar tidak terjadi *overflow* pada layar berukuran kecil.
+   * `Column`: Menyusun beberapa widget anak secara vertikal dari atas ke bawah.
+   * `Row`: Menyusun beberapa widget anak secara horizontal dari kiri ke kanan.
+   * `Container`: Kotak serbaguna untuk mengatur *padding*, lebar/tinggi, dan dekorasi visual (`BoxDecoration` seperti warna latar, sudut melengkung, dan garis tepi).
+   * `Padding`: Memberikan jarak ruang di sekeliling widget anaknya.
+   * `SizedBox`: Memberikan jarak kosong tetap antar-widget.
+   * `Expanded`: Membagi ruang tersisa di dalam `Row` secara proporsional untuk ketiga kartu informasi.
+   * `Text`: Menampilkan untaian teks dengan pengaturan gaya (`TextStyle`).
+   * `Icon`: Menampilkan ikon grafis bawaan Material Icons.
+   * `GridView.count`: Menampilkan daftar tombol menu dalam tata letak kisi (*grid*) berjumlah 3 kolom.
+   * `InfoCard` (`StatelessWidget`): Widget kustom untuk menampilkan informasi identitas (`NPM`, `Name`, dan `Class`).
+   * `ItemCard` (`StatelessWidget`): Widget kustom untuk menampilkan kartu tombol menu aksi portofolio.
+   * `Material`: Memberikan permukaan berbasis Material Design (warna latar, elevasi bayangan, dan bentuk sudut membulat) pada `ItemCard`.
+   * `InkWell`: Memberikan respons sentuhan (*onTap*) beserta efek riak air (*ripple effect*) pada `ItemCard`.
+   * `SnackBar`: Notifikasi singkat yang muncul di bagian bawah layar saat tombol menu ditekan.
 
-MaterialApp: Widget root yang mengonfigurasi tema dasar, navigasi, dan elemen desain Material.
+3. **Apa fungsi dari widget MaterialApp? Jelaskan mengapa widget ini umumnya digunakan sebagai root widget pada aplikasi Flutter!**
+   `MaterialApp` berfungsi untuk membungkus seluruh aplikasi dengan sistem desain Google Material Design, mengatur tema warna global (`ThemeData`), navigasi antarhalaman (`Navigator`), lokalisasi, serta menyediakan konteks dasar yang dibutuhkan widget-widget Material seperti `Scaffold` dan `ScaffoldMessenger` (untuk `SnackBar`). Widget ini digunakan sebagai *root widget* agar seluruh turunan widget di bawahnya mewarisi tema, tipografi, dan sistem navigasi yang seragam tanpa perlu dikonfigurasi ulang di setiap halaman.
 
-Scaffold: Menyediakan struktur visual dasar layar, seperti tempat untuk AppBar, body, dan SnackBar.
+4. **Jelaskan perbedaan antara StatelessWidget dan StatefulWidget! Kapan kita sebaiknya memilih StatelessWidget dan kapan harus menggunakan StatefulWidget?**
+   `StatelessWidget` adalah widget yang bersifat statis (*immutable*), artinya tampilan UI-nya tidak berubah setelah dibangun kecuali menerima data baru dari *parent*-nya. Sebaliknya, `StatefulWidget` memiliki objek `State` terpisah yang dapat berubah secara dinamis selama siklus hidup widget, dan memanggil `setState()` akan memicu render ulang UI sesuai data terbaru. Kita memilih `StatelessWidget` untuk tampilan yang murni menampilkan data tetap (seperti kartu profil atau tombol navigasi statis), dan menggunakan `StatefulWidget` ketika komponen perlu merespons interaksi yang mengubah data tampilan secara langsung (seperti *counter*, *form input*, atau *toggle* tema).
 
-AppBar: Menampilkan navigasi/bar di bagian atas layar aplikasi.
+5. **Apa itu BuildContext dan mengapa penting di Flutter? Bagaimana penggunaannya di dalam metode build?**
+   `BuildContext` adalah objek referensi yang menandai lokasi spesifik sebuah widget di dalam struktur *widget tree*. Objek ini sangat penting karena menjadi penghubung bagi widget untuk mengakses data atau konfigurasi dari *ancestor widget* (induk di atasnya) tanpa harus mengoper parameter secara manual satu per satu. Di dalam metode `build(BuildContext context)`, `context` digunakan untuk mengambil konfigurasi tema aplikasi seperti `Theme.of(context).colorScheme.primary` pada `AppBar`, serta mencari `ScaffoldMessenger.of(context)` untuk menampilkan `SnackBar` di halaman aktif.
 
-Text: Menampilkan teks string di layar.
+6. **Jelaskan konsep hot reload di Flutter dan apa perbedaannya dengan hot restart! Kapan kita tidak bisa hanya mengandalkan hot reload dan harus melakukan hot restart atau full restart?**
+   *Hot reload* menyuntikkan (*inject*) kode Dart yang baru diubah ke dalam Dart Virtual Machine (DVM) yang sedang berjalan dan membangun ulang *widget tree* dalam hitungan detik tanpa menghapus *state* (data) aplikasi saat ini. Sebaliknya, *hot restart* memuat ulang seluruh kode aplikasi dari awal dan mereset semua *state* kembali ke nilai awal. Kita tidak bisa hanya mengandalkan *hot reload*—dan harus melakukan *hot restart* atau *full restart*—ketika mengubah struktur kelas utama, variabel global, inisialisasi di dalam `main()` atau `initState()`, maupun saat menambahkan *dependency/package* dan aset baru di `pubspec.yaml`.
 
-Padding: Memberikan ruang kosong (margin/padding) di sekeliling widget anaknya.
-
-Column: Menyusun widget anak-anaknya secara vertikal.
-
-Row: Menyusun widget anak-anaknya secara horizontal.
-
-Center: Memposisikan widget anaknya persis di tengah area yang tersedia.
-
-SizedBox: Memberikan jarak spesifik antar-widget (bisa vertikal atau horizontal).
-
-GridView.count: Menampilkan anak-anaknya dalam bentuk grid/kisi 2D dengan jumlah kolom tertentu.
-
-Card: Wadah visual dengan sudut membulat dan efek bayangan (elevasi).
-
-Container: Kotak serbaguna untuk mengatur ukuran, padding, atau margin dari sebuah widget.
-
-Material: Memberikan canvas dengan properti desain Material seperti warna latar belakang atau efek tinta.
-
-InkWell: Membuat area menjadi interaktif (bisa ditekan/diklik) dan memunculkan efek ripple (gelombang tinta).
-
-Icon: Menampilkan grafis ikon.
-
-SnackBar: Menampilkan pesan pop-up singkat di bagian bawah layar.
-
-3. Apa fungsi dari widget MaterialApp? Jelaskan mengapa widget ini umumnya digunakan sebagai root widget pada aplikasi Flutter!
-MaterialApp adalah widget praktis yang membungkus beberapa widget yang dibutuhkan untuk aplikasi berdesain Material. Fungsinya adalah untuk mengatur tema global (ThemeData), sistem routing/navigasi halaman, dan localization. Widget ini digunakan sebagai root (akar) karena memastikan semua widget di bawahnya mematuhi standar desain visual (Material Design) dan memiliki akses ke alat navigasi fundamental di seluruh bagian aplikasi.
-
-4. Jelaskan perbedaan antara StatelessWidget dan StatefulWidget! Kapan kita sebaiknya memilih StatelessWidget dan kapan harus menggunakan StatefulWidget?
-
-StatelessWidget: Widget yang sifatnya statis (tidak bisa berubah). Begitu dirender, UI-nya tidak akan berubah kecuali widget tersebut dihancurkan dan dibuat ulang oleh induknya.
-
-StatefulWidget: Widget yang sifatnya dinamis (bisa berubah). Memiliki objek State internal, dan tampilannya dapat di-update secara real-time dengan memanggil setState() saat ada interaksi pengguna atau aliran data baru.
-
-Kapan memilihnya? Gunakan StatelessWidget untuk UI yang informatif saja dan tidak berubah, seperti label teks, ikon, atau kartu info. Gunakan StatefulWidget saat UI perlu bereaksi dan merubah tampilannya, seperti halaman dengan form input, tombol counter, atau animasi yang sedang berjalan.
-
-5. Apa itu BuildContext dan mengapa penting di Flutter? Bagaimana penggunaannya di dalam metode build?
-BuildContext adalah "pegangan" (handle) atau referensi lokasi spesifik dari sebuah widget di dalam Widget Tree. Ini sangat penting karena Flutter menggunakannya untuk mengetahui di mana posisi widget tersebut relatif terhadap widget lainnya. Di dalam metode build, BuildContext digunakan untuk mencari informasi atau data dari widget parent/ancestor yang lebih tinggi di tree, misalnya mencari tema saat ini (Theme.of(context)), mencari ukuran layar (MediaQuery.of(context)), atau memanggil fungsi navigasi dan SnackBar (ScaffoldMessenger.of(context)).
-
-6. Jelaskan konsep hot reload di Flutter dan apa perbedaannya dengan hot restart! Kapan kita tidak bisa hanya mengandalkan hot reload dan harus melakukan hot restart atau full restart?
-
-Hot Reload: Memuat (inject) kode yang baru diubah ke dalam Dart Virtual Machine (DVM) yang sedang berjalan, lalu melakukan build ulang UI-nya saja. State (data saat ini) aplikasi tetap dipertahankan (tidak hilang). Proses ini sangat cepat.
-
-Hot Restart: Memuat ulang seluruh kode dari awal dan me-reset semua State ke nilai bawaannya. Lebih lambat dari hot reload tapi lebih cepat dari full restart.
-
-Kapan tidak bisa pakai Hot Reload? Kita harus menggunakan Hot Restart ketika mengubah kode inisialisasi awal (misalnya variabel global, struktur kelas, atau data di dalam initState()), atau saat menambahkan package/aset (gambar/font) baru, karena DVM perlu direstart untuk membaca ulang keseluruhan struktur awal dan dependencies yang baru.
+#### AI Disclosure
+* **Tools yang digunakan:** Gemini.
+* **Bagian yang dibantu AI:** Penyusunan struktur variasi warna `ItemHomepage`, peningkatan tata letak UI/UX pada `lib/menu.dart` (*header banner* dan *grid* kartu), serta peninjauan konsep untuk pertanyaan reflektif.
+* **Proses verifikasi & penyesuaian manual:** Menguji seluruh perubahan secara lokal melalui `flutter run` dan memverifikasi tidak ada peringatan sintaks menggunakan `flutter analyze` sebelum melakukan *commit* bertahap ke GitHub.
