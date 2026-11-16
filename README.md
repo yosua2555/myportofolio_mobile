@@ -14,26 +14,32 @@ Aplikasi mobile portofolio pribadi berbasis Flutter untuk mata kuliah Pemrograma
 ## 📱 Tentang Proyek
 Proyek ini merupakan klien aplikasi *mobile* multiplatform yang dibangun menggunakan **Flutter** dan bahasa **Dart**. Aplikasi ini berfungsi sebagai antarmuka *mobile* bagi portofolio pribadi (`myportofolio`), yang nantinya akan diintegrasikan dengan REST API Django REST Framework (DRF) yang telah dibangun pada Tutorial 07.
 
-Pada **Tutorial 08**, aplikasi ini menampilkan halaman beranda statis portofolio dengan identitas pemilik dan kisi-kisi tombol menu aksi yang interaktif.
+* **Tutorial 08**: Menampilkan halaman beranda statis portofolio dengan identitas pemilik dan kisi-kisi tombol menu aksi yang interaktif.
+* **Tutorial 09**: Mengimplementasikan navigasi antarhalaman (*routing* dengan `Navigator.push` dan `Navigator.pushReplacement`), drawer navigasi (`LeftDrawer`), formulir input proyek (`ProjectFormPage`) dengan validasi data dan dialog pop-up konfirmasi, serta melakukan *refactoring* struktur file ke dalam folder `screens/` dan `widgets/`.
 
 ---
 
 ## ✨ Fitur & Komponen yang Diimplementasikan
-1. **Pemisahan Struktur Kode (*Separation of Concerns*)**:
-   - Memisahkan logika bootstrap/tema utama di `lib/main.dart` dengan kode tampilan halaman antarmuka di `lib/menu.dart`.
-2. **Kustomisasi Tema Material 3**:
-   - Menggunakan `ColorScheme.fromSeed` dengan warna dasar `Colors.indigo` dan warna sekunder `Colors.amber[700]` pada kartu tombol aksi.
-3. **Stateless Widget Halaman (`MyHomePage`)**:
-   - Mengubah widget halaman utama dari `StatefulWidget` menjadi `StatelessWidget` untuk performa rendering statis yang lebih ringan dan efisien.
-4. **Reusable Widget - `InfoCard`**:
-   - Menampilkan ringkasan identitas (NPM, Nama, Kelas) secara horizontal dengan layout `Row` dan `MediaQuery`.
-5. **Model Data & Reusable Widget - `ItemCard`**:
-   - Model data `ItemHomepage` merepresentasikan setiap tombol menu (*Lihat Proyek*, *Tambah Proyek*, *Logout*) beserta ikonnya.
-   - Widget `ItemCard` menggunakan `Material` dan `InkWell` untuk efek sentuhan (*ripple effect*).
-6. **Integrasi Widget Tree & Tata Letak Responsif**:
-   - Menggabungkan `Scaffold`, `AppBar`, `Padding`, `Column`, `Row`, dan `GridView.count(crossAxisCount: 3)` yang fleksibel dengan `shrinkWrap: true`.
-7. **Feedback Pengguna (*SnackBar*)**:
-   - Menampilkan notifikasi `SnackBar` interaktif ketika salah satu tombol menu ditekan: `"Kamu telah menekan tombol <nama_tombol>!"`.
+1. **Navigasi & Drawer Menu (`lib/widgets/left_drawer.dart`)**:
+   - Menambahkan menu laci navigasi samping (*side drawer*) dengan `DrawerHeader` bertema indigo.
+   - Menyediakan menu navigasi **Home** (kembali ke `MyHomePage`) dan **Add Project** (menuju `ProjectFormPage`) menggunakan `Navigator.pushReplacement()`.
+2. **Formulir Input Proyek (`lib/screens/project_form.dart`)**:
+   - Dibuat menggunakan `StatefulWidget` dengan `_formKey = GlobalKey<FormState>()` untuk mengelola *state* dan validasi form.
+   - Memiliki berbagai elemen input:
+     - *TextFormField* untuk **Nama Proyek** (dengan validasi wajib diisi).
+     - *TextFormField* *multiline* untuk **Deskripsi Proyek** (dengan validasi wajib diisi).
+     - *DropdownButtonFormField* untuk **Kategori Proyek** (*Web Development*, *Mobile Development*, *Machine Learning*, *Data Science*, *Other*).
+     - *TextFormField* untuk **Teknologi yang Digunakan**.
+     - *TextFormField* untuk **Tautan Proyek** (*opsional*).
+   - Tombol **Save** yang melakukan validasi input dan memunculkan pop-up dialog `AlertDialog` berisi seluruh data proyek yang telah diisi, serta mereset formulir setelah ditutup.
+3. **Navigasi dari Tombol Kartu (`lib/widgets/project_card.dart`)**:
+   - Menambahkan fungsi pada `onTap` di kartu `"Tambah Proyek"` untuk berpindah halaman ke `ProjectFormPage` menggunakan `Navigator.push()`.
+4. **Refactoring Struktur Berkas (*Clean Architecture*)**:
+   - Memisahkan berkas halaman ke direktori `lib/screens/` (`menu.dart`, `project_form.dart`).
+   - Memisahkan berkas *widget reusable* ke direktori `lib/widgets/` (`left_drawer.dart`, `project_card.dart`).
+   - Memperbarui seluruh referensi `import` di `lib/main.dart` dan berkas lainnya.
+5. **Kepatuhan Tutorial**:
+   - Memastikan seluruh petunjuk TODO pada materi tutorial telah diselesaikan dan dibersihkan dari kode.
 
 ---
 
