@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:myportofolio_mobile/widgets/left_drawer.dart';
 
+/// Halaman formulir untuk menambahkan entri proyek baru pada portofolio.
 class ProjectFormPage extends StatefulWidget {
   const ProjectFormPage({super.key});
 

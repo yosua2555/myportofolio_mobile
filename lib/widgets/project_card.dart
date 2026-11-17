@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:myportofolio_mobile/screens/menu.dart';
+import 'package:myportofolio_mobile/screens/education_form.dart';
 import 'package:myportofolio_mobile/screens/project_form.dart';
 
+/// Model data untuk satu tombol aksi pada menu beranda portofolio.
 class ItemHomepage {
   final String name;
   final IconData icon;
@@ -10,6 +11,8 @@ class ItemHomepage {
   ItemHomepage(this.name, this.icon, this.color);
 }
 
+/// Kartu aksi interaktif yang menampilkan umpan balik [SnackBar] dan
+/// menavigasi ke halaman formulir yang sesuai menggunakan `Navigator.push()`.
 class ItemCard extends StatelessWidget {
   final ItemHomepage item;
 
@@ -44,6 +47,13 @@ class ItemCard extends StatelessWidget {
               context,
               MaterialPageRoute(
                 builder: (context) => const ProjectFormPage(),
+              ),
+            );
+          } else if (item.name == "Tambah Edukasi") {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const EducationFormPage(),
               ),
             );
           }

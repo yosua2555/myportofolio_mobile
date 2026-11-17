@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:myportofolio_mobile/widgets/left_drawer.dart';
 import 'package:myportofolio_mobile/widgets/project_card.dart';
 
+/// Halaman beranda aplikasi yang menampilkan ringkasan identitas pemilik
+/// portofolio dan kisi tombol navigasi menu utama.
 class MyHomePage extends StatelessWidget {
   MyHomePage({super.key});
 
@@ -12,6 +14,7 @@ class MyHomePage extends StatelessWidget {
   final List<ItemHomepage> items = [
     ItemHomepage("Lihat Proyek", Icons.folder_rounded, const Color(0xFF2563EB)),
     ItemHomepage("Tambah Proyek", Icons.add_circle_rounded, const Color(0xFF059669)),
+    ItemHomepage("Tambah Edukasi", Icons.school_rounded, const Color(0xFF7C3AED)),
     ItemHomepage("Logout", Icons.logout_rounded, const Color(0xFFDC2626)),
   ];
 
@@ -115,9 +118,9 @@ class MyHomePage extends StatelessWidget {
                     primary: false,
                     crossAxisSpacing: 12,
                     mainAxisSpacing: 12,
-                    crossAxisCount: 3,
+                    crossAxisCount: 2,
                     shrinkWrap: true,
-                    childAspectRatio: 0.92,
+                    childAspectRatio: 1.45,
                     children: items.map((ItemHomepage item) {
                       return ItemCard(item);
                     }).toList(),
@@ -132,6 +135,7 @@ class MyHomePage extends StatelessWidget {
   }
 }
 
+/// Kartu ringkas untuk menampilkan sepasang label dan nilai identitas mahasiswa.
 class InfoCard extends StatelessWidget {
   final String title;
   final String content;
