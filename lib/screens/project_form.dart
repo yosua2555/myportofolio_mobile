@@ -121,7 +121,7 @@ class _ProjectFormPageState extends State<ProjectFormPage> {
             ),
           );
       }
-    } catch (_) {
+    } on Object catch (_) {
       if (!mounted) return;
       ScaffoldMessenger.of(context)
         ..hideCurrentSnackBar()
@@ -156,13 +156,13 @@ class _ProjectFormPageState extends State<ProjectFormPage> {
       body: Form(
         key: _formKey,
         child: SingleChildScrollView(
-          padding: const EdgeInsets.fromLTRB(8.0, 8.0, 8.0, 48.0),
+          padding: const EdgeInsets.fromLTRB(8, 8, 8, 48),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // === Project Name ===
               Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: const EdgeInsets.all(8),
                 child: TextFormField(
                   controller: _nameController,
                   decoration: InputDecoration(
@@ -171,10 +171,10 @@ class _ProjectFormPageState extends State<ProjectFormPage> {
                     filled: true,
                     fillColor: Colors.white,
                     border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(5.0),
+                      borderRadius: BorderRadius.circular(5),
                     ),
                   ),
-                  validator: (String? value) {
+                  validator: (value) {
                     if (value == null || value.trim().isEmpty) {
                       return 'Nama proyek tidak boleh kosong!';
                     }
@@ -185,7 +185,7 @@ class _ProjectFormPageState extends State<ProjectFormPage> {
 
               // === Year (date) ===
               Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: const EdgeInsets.all(8),
                 child: TextFormField(
                   controller: _dateController,
                   keyboardType: TextInputType.number,
@@ -195,10 +195,10 @@ class _ProjectFormPageState extends State<ProjectFormPage> {
                     filled: true,
                     fillColor: Colors.white,
                     border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(5.0),
+                      borderRadius: BorderRadius.circular(5),
                     ),
                   ),
-                  validator: (String? value) {
+                  validator: (value) {
                     final trimmed = value?.trim() ?? '';
                     if (trimmed.isEmpty) {
                       return 'Tahun proyek tidak boleh kosong!';
@@ -214,7 +214,7 @@ class _ProjectFormPageState extends State<ProjectFormPage> {
 
               // === Description ===
               Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: const EdgeInsets.all(8),
                 child: TextFormField(
                   controller: _descriptionController,
                   maxLines: 5,
@@ -224,10 +224,10 @@ class _ProjectFormPageState extends State<ProjectFormPage> {
                     filled: true,
                     fillColor: Colors.white,
                     border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(5.0),
+                      borderRadius: BorderRadius.circular(5),
                     ),
                   ),
-                  validator: (String? value) {
+                  validator: (value) {
                     if (value == null || value.trim().isEmpty) {
                       return 'Deskripsi proyek tidak boleh kosong!';
                     }
@@ -240,7 +240,7 @@ class _ProjectFormPageState extends State<ProjectFormPage> {
               Align(
                 alignment: Alignment.bottomCenter,
                 child: Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: const EdgeInsets.all(8),
                   child: ElevatedButton(
                     style: ButtonStyle(
                       backgroundColor: WidgetStateProperty.all(

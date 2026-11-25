@@ -1,6 +1,19 @@
 /// Model data immutable untuk merepresentasikan satu entri riwayat edukasi
 /// pada portofolio pengguna.
 class EducationEntry {
+  /// Membuat instance [EducationEntry] baru.
+  const EducationEntry({
+    required this.institution,
+    required this.degree,
+    required this.major,
+    required this.startDate,
+    required this.isCurrent,
+    this.endDate,
+    this.gpa,
+    this.institutionUrl,
+    this.description,
+  });
+
   /// Nama institusi pendidikan (mis. universitas, sekolah, atau bootcamp).
   final String institution;
 
@@ -13,10 +26,10 @@ class EducationEntry {
   /// Tanggal mulai menempuh pendidikan.
   final DateTime startDate;
 
-  /// Tanggal selesai menempuh pendidikan; bernilai `null` jika [isCurrent] aktif.
+  /// Tanggal selesai studi; bernilai `null` jika [isCurrent] aktif.
   final DateTime? endDate;
 
-  /// Menandakan apakah pengguna masih aktif menempuh pendidikan di institusi ini.
+  /// Menandakan apakah pengguna masih aktif menempuh pendidikan di sini.
   final bool isCurrent;
 
   /// Indeks Prestasi Kumulatif (skala 0.00–4.00), bersifat opsional.
@@ -43,20 +56,7 @@ class EducationEntry {
     'Des',
   ];
 
-  /// Membuat instance [EducationEntry] baru.
-  const EducationEntry({
-    required this.institution,
-    required this.degree,
-    required this.major,
-    required this.startDate,
-    this.endDate,
-    required this.isCurrent,
-    this.gpa,
-    this.institutionUrl,
-    this.description,
-  });
-
-  /// Memformat [DateTime] menjadi string ringkas berbahasa Indonesia (`17 Nov 2026`).
+  /// Memformat [DateTime] menjadi string ringkas (`17 Nov 2026`).
   static String formatDate(DateTime date) {
     return '${date.day} ${_monthNames[date.month - 1]} ${date.year}';
   }
@@ -70,6 +70,6 @@ class EducationEntry {
     return '$start - $end';
   }
 
-  /// Mengembalikan string IPK terformat 2 angka di belakang koma, atau `null` jika kosong.
+  /// Mengembalikan IPK terformat 2 angka desimal, atau `null` jika kosong.
   String? get formattedGpa => gpa?.toStringAsFixed(2);
 }

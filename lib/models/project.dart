@@ -8,10 +8,10 @@ part 'project.g.dart';
 @JsonSerializable(fieldRename: FieldRename.snake)
 class Project {
   const Project({
-    this.id,
     required this.name,
     required this.description,
     required this.date,
+    this.id,
     this.starCount = 0,
     this.isStarred = false,
     this.starredByNames = '',

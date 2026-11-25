@@ -147,7 +147,8 @@ class ProjectDetailScreen extends StatelessWidget {
                       Text(
                         project.starredByNames.isEmpty
                             ? '${project.starCount} stars'
-                            : '${project.starCount} stars (${project.starredByNames})',
+                            : '${project.starCount} stars '
+                                  '(${project.starredByNames})',
                         style: const TextStyle(
                           fontSize: 14,
                           color: Color(0xFF334155),

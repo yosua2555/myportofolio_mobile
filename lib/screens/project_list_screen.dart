@@ -129,7 +129,8 @@ class _ProjectListScreenState extends State<ProjectListScreen> {
                       children: [
                         const SizedBox(height: 4),
                         Text(
-                          'Year: ${project.date}  ·  Stars: ${project.starCount}',
+                          'Year: ${project.date}  ·  '
+                          'Stars: ${project.starCount}',
                           style: TextStyle(
                             color: colorScheme.primary,
                             fontWeight: FontWeight.w600,
@@ -152,7 +153,7 @@ class _ProjectListScreenState extends State<ProjectListScreen> {
                     onTap: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(
+                        MaterialPageRoute<void>(
                           builder: (context) =>
                               ProjectDetailScreen(project: project),
                         ),
