@@ -5,7 +5,7 @@ import 'package:myportofolio_mobile/utils/education_validators.dart';
 void main() {
   group('EducationValidators', () {
     test(
-      'validateRequiredText rejects null, empty, whitespace, and oversized input',
+      'validateRequiredText rejects null, empty, spaces, and oversized text',
       () {
         expect(
           EducationValidators.validateRequiredText(null, 'Institusi'),
@@ -38,7 +38,7 @@ void main() {
     );
 
     test(
-      'validateGpa accepts empty, dot or comma decimals in 0.00-4.00 and rejects invalid values',
+      'validateGpa accepts dot/comma in 0.00-4.00 and rejects invalid values',
       () {
         expect(EducationValidators.validateGpa(null), isNull);
         expect(EducationValidators.validateGpa('  '), isNull);
@@ -91,47 +91,89 @@ void main() {
       },
     );
 
-    test(
-      'validateEndDate enforces presence and chronological order when not current',
-      () {
-        final start = DateTime(2023, 8, 1);
-        final beforeStart = DateTime(2023, 7, 31);
-        final afterStart = DateTime(2027, 6, 15);
+    test('validateEndDate enforces presence and order when not current', () {
+      final start = DateTime(2023, 8);
+      final beforeStart = DateTime(2023, 7, 31);
+      final afterStart = DateTime(2027, 6, 15);
 
-        expect(
-          EducationValidators.validateEndDate(
-            isCurrent: true,
-            startDate: start,
-            endDate: null,
-          ),
-          isNull,
-        );
-        expect(
-          EducationValidators.validateEndDate(
-            isCurrent: false,
-            startDate: start,
-            endDate: null,
-          ),
-          'Tanggal selesai wajib dipilih!',
-        );
-        expect(
-          EducationValidators.validateEndDate(
-            isCurrent: false,
-            startDate: start,
-            endDate: beforeStart,
-          ),
-          'Tanggal selesai tidak boleh sebelum tanggal mulai!',
-        );
-        expect(
-          EducationValidators.validateEndDate(
-            isCurrent: false,
-            startDate: start,
-            endDate: afterStart,
-          ),
-          isNull,
-        );
-      },
-    );
+      expect(
+        EducationValidators.validateEndDate(
+          isCurrent: true,
+          startDate: start,
+          endDate: null,
+        ),
+        isNull,
+      );
+      expect(
+        EducationValidators.validateEndDate(
+          isCurrent: false,
+          startDate: start,
+          endDate: null,
+        ),
+        'Tanggal selesai wajib dipilih!',
+      );
+      expect(
+        EducationValidators.validateEndDate(
+          isCurrent: false,
+          startDate: start,
+          endDate: beforeStart,
+        ),
+        'Tanggal selesai tidak boleh sebelum tanggal mulai!',
+      );
+      expect(
+        EducationValidators.validateEndDate(
+          isCurrent: false,
+          startDate: start,
+          endDate: afterStart,
+        ),
+        isNull,
+      );
+    });
+
+    test('validateStartedYear and validateEndedYear enforce valid ranges', () {
+      expect(
+        EducationValidators.validateStartedYear(''),
+        'Tahun mulai tidak boleh kosong!',
+      );
+      expect(
+        EducationValidators.validateStartedYear('abc'),
+        'Masukkan tahun mulai yang valid (1950–2100)!',
+      );
+      expect(EducationValidators.validateStartedYear('2025'), isNull);
+
+      expect(
+        EducationValidators.validateEndedYear(
+          isCurrent: true,
+          startedYearText: '2025',
+          endedYearText: '',
+        ),
+        isNull,
+      );
+      expect(
+        EducationValidators.validateEndedYear(
+          isCurrent: false,
+          startedYearText: '2025',
+          endedYearText: '',
+        ),
+        'Tahun selesai tidak boleh kosong!',
+      );
+      expect(
+        EducationValidators.validateEndedYear(
+          isCurrent: false,
+          startedYearText: '2025',
+          endedYearText: '2023',
+        ),
+        'Tahun selesai tidak boleh sebelum tahun mulai!',
+      );
+      expect(
+        EducationValidators.validateEndedYear(
+          isCurrent: false,
+          startedYearText: '2025',
+          endedYearText: '2029',
+        ),
+        isNull,
+      );
+    });
   });
 
   group('EducationEntry', () {
@@ -141,7 +183,6 @@ void main() {
         degree: 'S1',
         major: 'Ilmu Komputer',
         startDate: DateTime(2024, 9, 2),
-        endDate: null,
         isCurrent: true,
         gpa: 3.9,
       );
