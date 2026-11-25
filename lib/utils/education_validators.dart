@@ -8,7 +8,7 @@ abstract final class EducationValidators {
   static String? validateRequiredText(
     String? value,
     String fieldName, {
-    int maxLength = 120,
+    int maxLength = 255,
   }) {
     final trimmed = value?.trim() ?? '';
     if (trimmed.isEmpty) {
@@ -24,11 +24,50 @@ abstract final class EducationValidators {
   static String? validateOptionalMaxLength(
     String? value,
     String fieldName, {
-    int maxLength = 500,
+    int maxLength = 1000,
   }) {
     final trimmed = value?.trim() ?? '';
     if (trimmed.length > maxLength) {
       return '$fieldName maksimal $maxLength karakter!';
+    }
+    return null;
+  }
+
+  /// Memvalidasi tahun mulai (`started_year`) agar berupa bilangan bulat valid
+  /// pada rentang `1950–2100`.
+  static String? validateStartedYear(String? value) {
+    final trimmed = value?.trim() ?? '';
+    if (trimmed.isEmpty) {
+      return 'Tahun mulai tidak boleh kosong!';
+    }
+    final parsed = int.tryParse(trimmed);
+    if (parsed == null || parsed < 1950 || parsed > 2100) {
+      return 'Masukkan tahun mulai yang valid (1950–2100)!';
+    }
+    return null;
+  }
+
+  /// Memvalidasi tahun selesai (`ended_year`) saat [isCurrent] `false`,
+  /// serta memastikan tahun selesai tidak mendahului [startedYearText].
+  static String? validateEndedYear({
+    required bool isCurrent,
+    required String? startedYearText,
+    required String? endedYearText,
+  }) {
+    if (isCurrent) return null;
+
+    final trimmed = endedYearText?.trim() ?? '';
+    if (trimmed.isEmpty) {
+      return 'Tahun selesai tidak boleh kosong!';
+    }
+    final endYear = int.tryParse(trimmed);
+    if (endYear == null || endYear < 1950 || endYear > 2100) {
+      return 'Masukkan tahun selesai yang valid (1950–2100)!';
+    }
+
+    final startYear = int.tryParse(startedYearText?.trim() ?? '');
+    if (startYear != null && endYear < startYear) {
+      return 'Tahun selesai tidak boleh sebelum tahun mulai!';
     }
     return null;
   }
@@ -41,7 +80,7 @@ abstract final class EducationValidators {
     return double.tryParse(trimmed.replaceAll(',', '.'));
   }
 
-  /// Memvalidasi IPK opsional agar merupakan angka valid pada rentang `0.00–4.00`.
+  /// Memvalidasi IPK opsional pada rentang `0.00–4.00`.
   static String? validateGpa(String? value) {
     final trimmed = value?.trim() ?? '';
     if (trimmed.isEmpty) return null;
