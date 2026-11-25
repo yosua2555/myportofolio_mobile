@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:myportofolio_mobile/widgets/left_drawer.dart';
 import 'package:myportofolio_mobile/widgets/project_card.dart';
 
@@ -13,8 +13,16 @@ class MyHomePage extends StatelessWidget {
 
   final List<ItemHomepage> items = [
     ItemHomepage("Lihat Proyek", Icons.folder_rounded, const Color(0xFF2563EB)),
-    ItemHomepage("Tambah Proyek", Icons.add_circle_rounded, const Color(0xFF059669)),
-    ItemHomepage("Tambah Edukasi", Icons.school_rounded, const Color(0xFF7C3AED)),
+    ItemHomepage(
+      "Tambah Proyek",
+      Icons.add_circle_rounded,
+      const Color(0xFF059669),
+    ),
+    ItemHomepage(
+      "Tambah Edukasi",
+      Icons.school_rounded,
+      const Color(0xFF7C3AED),
+    ),
     ItemHomepage("Logout", Icons.logout_rounded, const Color(0xFFDC2626)),
   ];
 
@@ -82,11 +90,17 @@ class MyHomePage extends StatelessWidget {
                   const SizedBox(height: 18),
                   Row(
                     children: [
-                      Expanded(child: InfoCard(title: 'NPM', content: npm)),
+                      Expanded(
+                        child: InfoCard(title: 'NPM', content: npm),
+                      ),
                       const SizedBox(width: 10),
-                      Expanded(child: InfoCard(title: 'Name', content: nama)),
+                      Expanded(
+                        child: InfoCard(title: 'Name', content: nama),
+                      ),
                       const SizedBox(width: 10),
-                      Expanded(child: InfoCard(title: 'Class', content: kelas)),
+                      Expanded(
+                        child: InfoCard(title: 'Class', content: kelas),
+                      ),
                     ],
                   ),
                 ],
@@ -108,10 +122,7 @@ class MyHomePage extends StatelessWidget {
                   const SizedBox(height: 4),
                   const Text(
                     'Pilih aksi untuk mengelola portofolio pribadimu',
-                    style: TextStyle(
-                      fontSize: 13,
-                      color: Color(0xFF64748B),
-                    ),
+                    style: TextStyle(fontSize: 13, color: Color(0xFF64748B)),
                   ),
                   const SizedBox(height: 16),
                   GridView.count(

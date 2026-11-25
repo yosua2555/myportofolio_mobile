@@ -64,7 +64,9 @@ class EducationEntry {
   /// Mengembalikan rentang tanggal mulai hingga selesai (atau `"Saat ini"`).
   String get formattedPeriod {
     final start = formatDate(startDate);
-    final end = isCurrent || endDate == null ? 'Saat ini' : formatDate(endDate!);
+    final end = isCurrent || endDate == null
+        ? 'Saat ini'
+        : formatDate(endDate!);
     return '$start - $end';
   }
 

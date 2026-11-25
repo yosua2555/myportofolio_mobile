@@ -62,7 +62,8 @@ abstract final class EducationValidators {
     if (trimmed.isEmpty) return null;
 
     final uri = Uri.tryParse(trimmed);
-    final isValidHttp = uri != null &&
+    final isValidHttp =
+        uri != null &&
         (uri.scheme == 'http' || uri.scheme == 'https') &&
         uri.host.isNotEmpty &&
         uri.host.contains('.');

@@ -1,6 +1,10 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:myportofolio_mobile/screens/education_form.dart';
 import 'package:myportofolio_mobile/screens/project_form.dart';
+import 'package:myportofolio_mobile/screens/project_list_screen.dart';
+import 'package:myportofolio_mobile/services/auth_state.dart';
+import 'package:myportofolio_mobile/widgets/auth_guard.dart';
+import 'package:provider/provider.dart';
 
 /// Model data untuk satu tombol aksi pada menu beranda portofolio.
 class ItemHomepage {
@@ -12,7 +16,7 @@ class ItemHomepage {
 }
 
 /// Kartu aksi interaktif yang menampilkan umpan balik [SnackBar] dan
-/// menavigasi ke halaman formulir yang sesuai menggunakan `Navigator.push()`.
+/// menavigasi ke halaman yang sesuai menggunakan `Navigator.push()`.
 class ItemCard extends StatelessWidget {
   final ItemHomepage item;
 
@@ -27,7 +31,39 @@ class ItemCard extends StatelessWidget {
       borderRadius: BorderRadius.circular(16),
       child: InkWell(
         borderRadius: BorderRadius.circular(16),
-        onTap: () {
+        onTap: () async {
+          if (item.name == 'Logout') {
+            final authState = context.read<AuthState>();
+            if (!authState.isLoggedIn) {
+              ScaffoldMessenger.of(context)
+                ..hideCurrentSnackBar()
+                ..showSnackBar(
+                  SnackBar(
+                    behavior: SnackBarBehavior.floating,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    content: const Text('Kamu belum login.'),
+                  ),
+                );
+              return;
+            }
+            await authState.logout();
+            if (!context.mounted) return;
+            ScaffoldMessenger.of(context)
+              ..hideCurrentSnackBar()
+              ..showSnackBar(
+                SnackBar(
+                  behavior: SnackBarBehavior.floating,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  content: const Text('Berhasil logout!'),
+                ),
+              );
+            return;
+          }
+
           // Memunculkan SnackBar ketika diklik
           ScaffoldMessenger.of(context)
             ..hideCurrentSnackBar()
@@ -37,19 +73,26 @@ class ItemCard extends StatelessWidget {
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10),
                 ),
-                content: Text("Kamu telah menekan tombol ${item.name}!"),
+                content: Text('Kamu telah menekan tombol ${item.name}!'),
               ),
             );
 
           // Navigate ke halaman yang sesuai
-          if (item.name == "Tambah Proyek") {
+          if (item.name == 'Lihat Proyek') {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => const ProjectFormPage(),
+                builder: (context) => const ProjectListScreen(),
               ),
             );
-          } else if (item.name == "Tambah Edukasi") {
+          } else if (item.name == 'Tambah Proyek') {
+            final allowed = await ensureLoggedIn(context);
+            if (!allowed || !context.mounted) return;
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const ProjectFormPage()),
+            );
+          } else if (item.name == 'Tambah Edukasi') {
             Navigator.push(
               context,
               MaterialPageRoute(
@@ -69,11 +112,7 @@ class ItemCard extends StatelessWidget {
                   color: Colors.white.withValues(alpha: 0.2),
                   shape: BoxShape.circle,
                 ),
-                child: Icon(
-                  item.icon,
-                  color: Colors.white,
-                  size: 26.0,
-                ),
+                child: Icon(item.icon, color: Colors.white, size: 26.0),
               ),
               const SizedBox(height: 10),
               Text(

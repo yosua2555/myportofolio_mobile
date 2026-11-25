@@ -2,6 +2,8 @@ analyzer:
   exclude:
     - build/**
     - web/**
+    - "**/*.g.dart"
+    - android/**
 include: package:flutter_lints/flutter.yaml
 
 linter:

@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:myportofolio_mobile/models/education_entry.dart';
 import 'package:myportofolio_mobile/utils/education_validators.dart';
 import 'package:myportofolio_mobile/widgets/left_drawer.dart';
@@ -90,9 +90,7 @@ class _EducationFormPageState extends State<EducationFormPage> {
       prefixIcon: Icon(prefixIcon),
       filled: true,
       fillColor: Colors.white,
-      border: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(10.0),
-      ),
+      border: OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
       enabledBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(10.0),
         borderSide: const BorderSide(color: Color(0xFFCBD5E1)),
@@ -242,10 +240,7 @@ class _EducationFormPageState extends State<EducationFormPage> {
         iconTheme: const IconThemeData(color: Colors.white),
         title: const Text(
           'Tambah Edukasi',
-          style: TextStyle(
-            color: Colors.white,
-            fontWeight: FontWeight.w700,
-          ),
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.w700),
         ),
       ),
       drawer: const LeftDrawer(),
@@ -272,10 +267,7 @@ class _EducationFormPageState extends State<EducationFormPage> {
                     const SizedBox(height: 4),
                     const Text(
                       'Lengkapi data institusi, jurusan, dan periode studi.',
-                      style: TextStyle(
-                        fontSize: 13,
-                        color: Color(0xFF64748B),
-                      ),
+                      style: TextStyle(fontSize: 13, color: Color(0xFF64748B)),
                     ),
                     const SizedBox(height: 16),
 
@@ -291,10 +283,10 @@ class _EducationFormPageState extends State<EducationFormPage> {
                       ),
                       validator: (value) =>
                           EducationValidators.validateRequiredText(
-                        value,
-                        'Nama institusi',
-                        maxLength: 120,
-                      ),
+                            value,
+                            'Nama institusi',
+                            maxLength: 120,
+                          ),
                     ),
                     const SizedBox(height: 12),
 
@@ -339,10 +331,10 @@ class _EducationFormPageState extends State<EducationFormPage> {
                       ),
                       validator: (value) =>
                           EducationValidators.validateRequiredText(
-                        value,
-                        'Jurusan / Program Studi',
-                        maxLength: 100,
-                      ),
+                            value,
+                            'Jurusan / Program Studi',
+                            maxLength: 100,
+                          ),
                     ),
                     const SizedBox(height: 12),
 
@@ -396,7 +388,9 @@ class _EducationFormPageState extends State<EducationFormPage> {
                       controller: _endDateController,
                       readOnly: true,
                       enabled: !_isCurrent,
-                      onTap: _isCurrent ? null : () => _pickDate(isStart: false),
+                      onTap: _isCurrent
+                          ? null
+                          : () => _pickDate(isStart: false),
                       decoration: _buildInputDecoration(
                         labelText: _isCurrent
                             ? 'Tanggal Selesai (Saat ini)'
@@ -417,8 +411,9 @@ class _EducationFormPageState extends State<EducationFormPage> {
                     // IPK / Nilai Akhir (Opsional)
                     TextFormField(
                       controller: _gpaController,
-                      keyboardType:
-                          const TextInputType.numberWithOptions(decimal: true),
+                      keyboardType: const TextInputType.numberWithOptions(
+                        decimal: true,
+                      ),
                       textInputAction: TextInputAction.next,
                       decoration: _buildInputDecoration(
                         labelText: 'IPK / Nilai Akhir (Opsional)',
@@ -456,10 +451,10 @@ class _EducationFormPageState extends State<EducationFormPage> {
                       ),
                       validator: (value) =>
                           EducationValidators.validateOptionalMaxLength(
-                        value,
-                        'Deskripsi',
-                        maxLength: 500,
-                      ),
+                            value,
+                            'Deskripsi',
+                            maxLength: 500,
+                          ),
                     ),
                     const SizedBox(height: 20),
 
