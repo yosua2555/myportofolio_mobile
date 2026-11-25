@@ -1,5 +1,6 @@
 import 'package:material_ui/material_ui.dart';
 import 'package:myportofolio_mobile/screens/education_form.dart';
+import 'package:myportofolio_mobile/screens/education_list_screen.dart';
 import 'package:myportofolio_mobile/screens/project_form.dart';
 import 'package:myportofolio_mobile/screens/project_list_screen.dart';
 import 'package:myportofolio_mobile/services/auth_state.dart';
@@ -8,19 +9,19 @@ import 'package:provider/provider.dart';
 
 /// Model data untuk satu tombol aksi pada menu beranda portofolio.
 class ItemHomepage {
+  ItemHomepage(this.name, this.icon, this.color);
+
   final String name;
   final IconData icon;
   final Color color;
-
-  ItemHomepage(this.name, this.icon, this.color);
 }
 
 /// Kartu aksi interaktif yang menampilkan umpan balik [SnackBar] dan
 /// menavigasi ke halaman yang sesuai menggunakan `Navigator.push()`.
 class ItemCard extends StatelessWidget {
-  final ItemHomepage item;
-
   const ItemCard(this.item, {super.key});
+
+  final ItemHomepage item;
 
   @override
   Widget build(BuildContext context) {
@@ -81,7 +82,7 @@ class ItemCard extends StatelessWidget {
           if (item.name == 'Lihat Proyek') {
             Navigator.push(
               context,
-              MaterialPageRoute(
+              MaterialPageRoute<void>(
                 builder: (context) => const ProjectListScreen(),
               ),
             );
@@ -90,12 +91,23 @@ class ItemCard extends StatelessWidget {
             if (!allowed || !context.mounted) return;
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => const ProjectFormPage()),
+              MaterialPageRoute<void>(
+                builder: (context) => const ProjectFormPage(),
+              ),
             );
-          } else if (item.name == 'Tambah Edukasi') {
+          } else if (item.name == 'Lihat Edukasi') {
             Navigator.push(
               context,
-              MaterialPageRoute(
+              MaterialPageRoute<void>(
+                builder: (context) => const EducationListScreen(),
+              ),
+            );
+          } else if (item.name == 'Tambah Edukasi') {
+            final allowed = await ensureLoggedIn(context);
+            if (!allowed || !context.mounted) return;
+            Navigator.push(
+              context,
+              MaterialPageRoute<void>(
                 builder: (context) => const EducationFormPage(),
               ),
             );
@@ -112,7 +124,7 @@ class ItemCard extends StatelessWidget {
                   color: Colors.white.withValues(alpha: 0.2),
                   shape: BoxShape.circle,
                 ),
-                child: Icon(item.icon, color: Colors.white, size: 26.0),
+                child: Icon(item.icon, color: Colors.white, size: 26),
               ),
               const SizedBox(height: 10),
               Text(

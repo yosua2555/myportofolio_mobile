@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 import 'package:myportofolio_mobile/config.dart';
+import 'package:myportofolio_mobile/models/education.dart';
 import 'package:myportofolio_mobile/models/project.dart';
 
 /// Exception thrown when an API request returns a non-2xx status code.
@@ -25,11 +26,20 @@ class ApiClient {
 
   Uri _uri(String path) => Uri.parse('$baseUrl$path');
 
+  Map<String, String> _jsonHeaders({String? token}) => {
+    'Accept': 'application/json',
+    'Content-Type': 'application/json; charset=UTF-8',
+    if (token != null) 'Authorization': 'Token $token',
+  };
+
   /// Fetches the public list of portfolio projects from `/api/v1/projects/`.
-  Future<List<Project>> getProjects() async {
+  Future<List<Project>> getProjects({String? token}) async {
     final response = await _client.get(
       _uri('/api/v1/projects/'),
-      headers: const {'Accept': 'application/json'},
+      headers: {
+        'Accept': 'application/json',
+        if (token != null) 'Authorization': 'Token $token',
+      },
     );
     _ensureSuccess(response);
 
@@ -46,11 +56,7 @@ class ApiClient {
   }) async {
     final response = await _client.post(
       _uri('/api/v1/projects/'),
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json; charset=UTF-8',
-        'Authorization': 'Token $token',
-      },
+      headers: _jsonHeaders(token: token),
       body: jsonEncode(project.toJson()),
     );
     _ensureSuccess(response);
@@ -59,14 +65,85 @@ class ApiClient {
     return Project.fromJson(decoded);
   }
 
+  /// Fetches the public list of education entries from `/api/v1/education/`.
+  Future<List<Education>> getEducations({String? token}) async {
+    final response = await _client.get(
+      _uri('/api/v1/education/'),
+      headers: {
+        'Accept': 'application/json',
+        if (token != null) 'Authorization': 'Token $token',
+      },
+    );
+    _ensureSuccess(response);
+
+    final decoded = jsonDecode(response.body) as List<dynamic>;
+    return decoded
+        .map((item) => Education.fromJson(item as Map<String, dynamic>))
+        .toList();
+  }
+
+  /// Creates a new education entry via `POST /api/v1/education/` using token auth.
+  Future<Education> createEducation(
+    Education education, {
+    required String token,
+  }) async {
+    final response = await _client.post(
+      _uri('/api/v1/education/'),
+      headers: _jsonHeaders(token: token),
+      body: jsonEncode(education.toJson()),
+    );
+    _ensureSuccess(response);
+
+    final decoded = jsonDecode(response.body) as Map<String, dynamic>;
+    return Education.fromJson(decoded);
+  }
+
+  /// Updates an existing education entry via `PATCH /api/v1/education/<id>/`.
+  Future<Education> updateEducation(
+    String id,
+    Education education, {
+    required String token,
+  }) async {
+    final response = await _client.patch(
+      _uri('/api/v1/education/$id/'),
+      headers: _jsonHeaders(token: token),
+      body: jsonEncode(education.toJson()),
+    );
+    _ensureSuccess(response);
+
+    final decoded = jsonDecode(response.body) as Map<String, dynamic>;
+    return Education.fromJson(decoded);
+  }
+
+  /// Deletes an education entry via `DELETE /api/v1/education/<id>/`.
+  Future<void> deleteEducation(String id, {required String token}) async {
+    final response = await _client.delete(
+      _uri('/api/v1/education/$id/'),
+      headers: {'Accept': 'application/json', 'Authorization': 'Token $token'},
+    );
+    _ensureSuccess(response);
+  }
+
+  /// Toggles star status on an education entry via `POST /api/v1/education/<id>/star/`.
+  Future<Education> toggleEducationStar(
+    String id, {
+    required String token,
+  }) async {
+    final response = await _client.post(
+      _uri('/api/v1/education/$id/star/'),
+      headers: {'Accept': 'application/json', 'Authorization': 'Token $token'},
+    );
+    _ensureSuccess(response);
+
+    final decoded = jsonDecode(response.body) as Map<String, dynamic>;
+    return Education.fromJson(decoded);
+  }
+
   /// Exchanges [username] and [password] for an auth token at `/api/v1/auth/token/`.
   Future<String> obtainToken(String username, String password) async {
     final response = await _client.post(
       _uri('/api/v1/auth/token/'),
-      headers: const {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
+      headers: _jsonHeaders(),
       body: jsonEncode({'username': username, 'password': password}),
     );
     _ensureSuccess(response);

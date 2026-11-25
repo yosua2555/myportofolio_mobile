@@ -11,13 +11,13 @@ class AuthState extends ChangeNotifier {
   String? get token => _token;
   bool get isLoggedIn => _token != null;
 
-  /// Authenticates with [username] and [password] and stores the returned token.
+  /// Authenticates with [username] and [password] and stores the token.
   Future<void> login(String username, String password) async {
     _token = await _apiClient.obtainToken(username, password);
     notifyListeners();
   }
 
-  /// Revokes the active token on the backend and clears the local session state.
+  /// Revokes the active token on the backend and clears local session state.
   Future<void> logout() async {
     final current = _token;
     if (current == null) return;

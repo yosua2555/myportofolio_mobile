@@ -7,23 +7,28 @@ import 'package:myportofolio_mobile/widgets/project_card.dart';
 class MyHomePage extends StatelessWidget {
   MyHomePage({super.key});
 
-  final String npm = "25066657402";
-  final String nama = "Yosua Peitho Purba";
-  final String kelas = "PBP E";
+  final String npm = '25066657402';
+  final String nama = 'Yosua Peitho Purba';
+  final String kelas = 'PBP E';
 
   final List<ItemHomepage> items = [
-    ItemHomepage("Lihat Proyek", Icons.folder_rounded, const Color(0xFF2563EB)),
+    ItemHomepage('Lihat Proyek', Icons.folder_rounded, const Color(0xFF2563EB)),
     ItemHomepage(
-      "Tambah Proyek",
+      'Tambah Proyek',
       Icons.add_circle_rounded,
       const Color(0xFF059669),
     ),
     ItemHomepage(
-      "Tambah Edukasi",
+      'Lihat Edukasi',
+      Icons.menu_book_rounded,
+      const Color(0xFF0891B2),
+    ),
+    ItemHomepage(
+      'Tambah Edukasi',
       Icons.school_rounded,
       const Color(0xFF7C3AED),
     ),
-    ItemHomepage("Logout", Icons.logout_rounded, const Color(0xFFDC2626)),
+    ItemHomepage('Logout', Icons.logout_rounded, const Color(0xFFDC2626)),
   ];
 
   @override
@@ -132,7 +137,7 @@ class MyHomePage extends StatelessWidget {
                     crossAxisCount: 2,
                     shrinkWrap: true,
                     childAspectRatio: 1.45,
-                    children: items.map((ItemHomepage item) {
+                    children: items.map((item) {
                       return ItemCard(item);
                     }).toList(),
                   ),
@@ -146,12 +151,12 @@ class MyHomePage extends StatelessWidget {
   }
 }
 
-/// Kartu ringkas untuk menampilkan sepasang label dan nilai identitas mahasiswa.
+/// Kartu ringkas untuk menampilkan label dan nilai identitas mahasiswa.
 class InfoCard extends StatelessWidget {
+  const InfoCard({super.key, required this.title, required this.content});
+
   final String title;
   final String content;
-
-  const InfoCard({super.key, required this.title, required this.content});
 
   @override
   Widget build(BuildContext context) {

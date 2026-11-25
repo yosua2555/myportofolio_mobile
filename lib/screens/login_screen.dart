@@ -37,11 +37,12 @@ class _LoginScreenState extends State<LoginScreen> {
           SnackBar(
             behavior: SnackBarBehavior.floating,
             content: Text(
-              'Login gagal (HTTP ${e.statusCode}). Periksa username dan password Anda.',
+              'Login gagal (HTTP ${e.statusCode}). '
+              'Periksa username dan password Anda.',
             ),
           ),
         );
-    } catch (_) {
+    } on Object catch (_) {
       if (!mounted) return;
       ScaffoldMessenger.of(context)
         ..hideCurrentSnackBar()
